@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq
+  labels:
+    app: rabbitmq
+    version: v1
+spec:
+  selector:
+    matchLabels:
+      app: rabbitmq
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+        version: v1
+      annotations:
+        prometheus.io/scrape: "false"
+    spec:
+      containers:
+      - name: rabbitmq
+        image: rabbitmq:3.6.8-management
+        ports:
+        - containerPort: 15672
+          name: management
+        - containerPort: 5672
+          name: rabbitmq
+      - name: rabbitmq-exporter
+        image: kbudde/rabbitmq-exporter
+        ports:
+        - containerPort: 9090

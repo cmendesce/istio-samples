@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user
+  labels:
+    app: user
+    version: v1
+spec:
+  selector:
+    matchLabels:
+      app: user
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: user
+        version: v1
+    spec:
+      containers:
+      - name: user
+        image: weaveworksdemos/user:0.4.7
+        ports:
+        - containerPort: 80
+        env:
+        - name: mongo
+          value: user-db:27017

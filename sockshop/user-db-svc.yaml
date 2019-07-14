@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-db
+  labels:
+    app: user-db
+spec:
+  ports:
+  - port: 27017
+    name: mongo
+  selector:
+    app: user-db

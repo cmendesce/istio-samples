@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalogue-db
+  labels:
+    app: catalogue-db
+    version: v1
+spec:
+  selector:
+    matchLabels:
+      app: catalogue-db
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: catalogue-db
+        version: v1
+    spec:
+      containers:
+      - name: catalogue-db
+        image: weaveworksdemos/catalogue-db:0.3.0
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: fake_password
+          - name: MYSQL_DATABASE
+            value: socksdb
+        ports:
+        - containerPort: 3306

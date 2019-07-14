@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment
+  labels:
+    app: payment
+    version: v1
+spec:
+  selector:
+    matchLabels:
+      app: payment
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: payment
+        version: v1
+    spec:
+      containers:
+      - name: payment
+        image: weaveworksdemos/payment:0.4.3
+        ports:
+        - containerPort: 80

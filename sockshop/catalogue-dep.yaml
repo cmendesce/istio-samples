@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalogue
+  labels:
+    app: catalogue
+    version: v1
+spec:
+  selector:
+    matchLabels:
+      app: catalogue
+      version: v1  
+  template:
+    metadata:
+      labels:
+        app: catalogue
+        version: v1
+    spec:
+      containers:
+      - name: catalogue
+        image: weaveworksdemos/catalogue:0.3.5
+        command: ["/app"]
+        args:
+        - -port=80
+        ports:
+        - containerPort: 80

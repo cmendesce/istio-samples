@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: carts-db
+  labels:
+    app: carts-db
+    version: v1
+spec:
+  selector:
+    matchLabels:
+      app: carts-db
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: carts-db
+        version: v1
+    spec:
+      containers:
+      - name: carts-db
+        image: mongo
+        ports:
+        - containerPort: 27017
