@@ -1,0 +1,65 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: result-fault
+spec:
+  hosts:
+  - result
+  gateways:
+  - votingapp-gateway
+  http:
+  - match:
+    - uri:
+        prefix: "/result"
+    rewrite:
+      uri: "/"
+    route:
+    - destination:
+        host: result
+        port:
+          number: 80
+  - match:
+    - uri:
+        exact: "/socket.io/"
+    rewrite:
+      uri: "/socket.io/"
+    fault:
+      delay:
+        percentage:
+          value: 100.0
+        fixedDelay: 7s
+    route:
+    - destination:
+        host: result
+        port:
+          number: 80
+  - match:
+    - uri:
+        exact: "/socket.io.js"
+    rewrite:
+      uri: "/socket.io.js"
+    route:
+    - destination:
+        host: result
+        port:
+          number: 80
+  - match:
+    - uri:
+        exact: "/stylesheets/style.css"
+    rewrite:
+      uri: "/stylesheets/style.css"
+    route:
+    - destination:
+        host: result
+        port:
+          number: 80
+  - match:
+    - uri:
+        exact: "/app.js"
+    rewrite:
+      uri: "/app.js"
+    route:
+    - destination:
+        host: result
+        port:
+          number: 80

@@ -1,0 +1,98 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: votingapp-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: front-end
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - votingapp-gateway
+  http:
+  - match:
+    - uri:
+        exact: "/"
+    route:
+      - destination:
+          host: vote
+          port:
+            number: 8081
+  - match:
+    - uri:
+        prefix: "/static"
+    rewrite:
+      uri: "/static"
+    route:
+      - destination:
+          host: vote
+          port:
+            number: 8081
+  - match:
+    - uri:
+        prefix: "/result"
+    rewrite:
+      uri: "/"
+    route:
+      - destination:
+          host: result
+          port:
+            number: 80
+  - match:
+    - uri:
+        exact: "/socket.io/"
+    rewrite:
+      uri: "/socket.io/"
+    # fault:
+    #   delay:
+    #     percentage:
+    #       value: 100.0
+    #     fixedDelay: 7s
+    route:
+      - destination:
+          host: result
+          port:
+            number: 80
+  - match:
+    - uri:
+        exact: "/socket.io.js"
+    rewrite:
+      uri: "/socket.io.js"
+    route:
+      - destination:
+          host: result
+          port:
+            number: 80
+  - match:
+    - uri:
+        exact: "/stylesheets/style.css"
+    rewrite:
+      uri: "/stylesheets/style.css"
+    route:
+      - destination:
+          host: result
+          port:
+            number: 80
+  - match:
+    - uri:
+        exact: "/app.js"
+    rewrite:
+      uri: "/app.js"
+    route:
+      - destination:
+          host: result
+          port:
+            number: 80

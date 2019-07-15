@@ -1,0 +1,29 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: db
+spec:
+  hosts:
+  - db
+  gateway:
+  - votingapp-gateway
+  http:
+  - route:
+    - destination:
+        host: db
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: redis
+spec:
+  hosts:
+  - redis
+  gateway:
+  - votingapp-gateway
+  http:
+  - route:
+    - destination:
+        host: redis
+---
